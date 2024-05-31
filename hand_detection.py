@@ -22,7 +22,7 @@ class HandTracker:
                     self.mpDraw.draw_landmarks(img, handLms, self.mpHands.HAND_CONNECTIONS)
         return img
 
-    def getPosition(self, img, handNo=0):
+    def getPosition(self, img, handNo=0, fingerIndex=8):
         lmList = []
         if self.results.multi_hand_landmarks:
             myHand = self.results.multi_hand_landmarks[handNo]
@@ -30,4 +30,6 @@ class HandTracker:
                 h, w, c = img.shape
                 cx, cy = int(lm.x * w), int(lm.y * h)
                 lmList.append([id, cx, cy])
-        return lmList
+        if lmList:
+            return lmList[fingerIndex][1], lmList[fingerIndex][2]
+        return None, None
